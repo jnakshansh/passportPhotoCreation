@@ -1,0 +1,129 @@
+.page{
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+#video-feed {
+    width: 640px;
+    height: 480px;
+    border: 1px solid black;
+}
+#captured-image-container {
+    width: 50%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+#captured-image {
+    max-width: 100%;
+    display: none;
+    margin: 20px;
+    padding: 20px;
+}
+#video-feed-div {
+    margin: 10px;
+    padding: 10px;
+}
+#image-input {
+    width: 100px;
+    height: 100px;
+    color: black;
+}
+.custom-file-input, .upload-file-btn{
+    font-size: 18px;
+    padding: 12px 20px;
+    border: 2px solid #04AA6D;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+.custom-file-input:hover {
+    background-color: #04AA6D;
+}
+.number-input {
+    background-color: white;
+    padding: 12px 20px;
+    width: 30%;
+    height: 40px;
+    box-sizing: border-box;
+}
+input[type=text]:focus {
+    border: 3px solid #555;
+}
+.save-btn {
+    font-size: 18px;
+    padding: 6px 10px;
+    margin-top: 10px;
+    border: 2px solid #04AA6D;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+.container {
+    gap: 1em;
+    margin-top: 20px;
+    border-radius: 7px solid #000;
+    height: 700px;
+    width: 700px;
+    object-fit: contain;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+.image-container, .preview-container {
+    flex: 1;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.container .preview-container img {
+    width: 80%;
+    height: auto;
+    object-fit: contain;
+} 
+
+.hide {
+    display: none;
+}
+
+.btns {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    margin-top: 1em;
+}
+
+.btns button {
+    font-size: 18px;
+    text-align: center;
+    padding: 6px 10px;
+    margin-top: 10px;
+    border: 2px solid #04AA6D;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+
+.btns input {
+    background-color: white;
+    padding: 12px 20px;
+    width: 30%;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+.btns input[type=text]:focus {
+    border: 3px solid #555;
+}

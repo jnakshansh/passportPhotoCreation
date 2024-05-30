@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Capture</title>
+    <link rel="stylesheet" href="./style.css">
+    <!-- Cropper -->
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
+</head>
+<body class="page">
+    <div>
+        <h1>Photo Capture</h1>
+        <div id="image-input">
+            <input type="file" id="imageInput" accept="image/*" class="custom-file-input">
+        </div>
+            <button id="upload-btn" class="upload-file-btn">Upload Image</button>
+        <div id="captured-image-container">
+            <img id="captured-image" alt="Captured Image">
+        </div>
+            <!-- <button id="retake-btn" style="display: none;">Retake Photo</button> -->
+        <div id="save-images-btns">
+            <h3>Enter number of images to print</h3>
+            <input type="number" id="numberOfImages" placeholder="Enter number of images to print" class="number-input">
+            <button id="save-btn" class="save-btn" style="display: block;">Save Photo</button>
+        </div>
+    </div>
+    <div id="header" class="hide">
+        <h2>Didn't liked the AI image cropper. Crop Yourself !. We will save it for you</h2>
+    </div>
+    <div class="container">
+        <div class="image-container">
+            <img id="cropper-image" />
+        </div>
+        <div class="preview-container"  >
+            <img id="preview-image" />
+        </div>
+    </div>
+    <div class="btns">
+        <button id="preview" class="hide">Preview</button>
+        <button id="download" class="hide">Download</button>
+        <input type="number" id="croppedNumberOfImages" placeholder="Enter number of images to print" class="number-input hide">
+    </div>
+
+    <script src="callAPI.js"></script>
+    <script src="https://unpkg.com/cropperjs@next"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+</body>
+</html>

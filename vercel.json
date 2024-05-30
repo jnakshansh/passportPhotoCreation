@@ -1,5 +1,4 @@
 {
-    "version": 2,
     "builds": [
         {
             "src": "app.py",
@@ -11,10 +10,5 @@
             "src": "(.*)",
             "dest": "app.py"
         }
-    ],
-    "functions": {
-        "api/**": {
-          "excludeFiles": "{.next,*.cache,node_modules,public,app}/**"
-        }
-      }
+    ]
   }

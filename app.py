@@ -5,9 +5,12 @@ import numpy as np
 import base64
 import io
 import os
+from flaskwebgui import FlaskUI
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'D:/mine/bhaiya/uploads/'
+
+ui = FlaskUI(app=app, server="flask", fullscreen=True)
 
 # Load the pre-trained face and eye cascade classifiers
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
@@ -28,59 +31,61 @@ def serve_static(path):
 
 @app.route('/')
 def index():
-    return render_template('indexJs.html')
+    return render_template('indexgpt.html')
 
 @app.route('/upload_image', methods=['POST'])
 def upload_image():
     global captured_image
     global captured_byte_image
-    if 'image' not in request.files:
-        return jsonify({'error': 'No file part'})
+    try:
+        if 'image' not in request.files:
+            return jsonify({'error': 'No file part'})
 
-    image_file = request.files['image']
-    if image_file.filename == '':
-        return jsonify({'error': 'No selected file'})
+        image_file = request.files['image']
+        if image_file.filename == '':
+            return jsonify({'error': 'No selected file'})
 
-    image_data = image_file.read()
-    image = cv2.imdecode(np.frombuffer(image_data, np.uint8), cv2.IMREAD_COLOR)
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    # sharpened_image = getClacheImage(gray_image)
-    faces = face_cascade.detectMultiScale(gray_image, 1.4, 3)
+        image_data = image_file.read()
+        image = cv2.imdecode(np.frombuffer(image_data, np.uint8), cv2.IMREAD_COLOR)
+        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        # sharpened_image = getClacheImage(gray_image)
+        faces = face_cascade.detectMultiScale(gray_image, 1.4, 3)
 
-    cropped_images = []
+        cropped_images = []
 
-    for (x, y, w, h) in faces:
-        cropped_image = image[y-95:y+h+95, x-75:x+w+75]
-        image_width=360
-        image_height=440
-
-        if not cropped_image.size == 0:
+        for (x, y, w, h) in faces:
+            cropped_image = image[y-95:y+h+95, x-75:x+w+75]
+            image_width=360
+            image_height=440
+            if cropped_image.size == 0:
+                cropped_image = image[y-40:y+h+40,x-40:x+w+40]
+            
             enhanced_image = add_black_border(cropped_image, top=5, bottom=5, left=5, right=5)
             cropped_images.append(getEnhancedImage(enhanced_image, image_width, image_height))
             captured_byte_image = cropped_image
 
-    if cropped_images:
-        # Save the captured image in-memory
-        show_image = Image.new('RGB', (image_width+100, image_height+100), color='white')
-        # sharpened_image = getClacheImage(cropped_images[0])
-        # show_image.paste(sharpened_image)
-        show_image.paste(cropped_images[0])
-        img_bytes = io.BytesIO()
-        show_image.save(img_bytes, format='JPEG')
-        captured_image = base64.b64encode(img_bytes.getvalue()).decode('utf-8')
+        if cropped_images:
+            # Save the captured image in-memory
+            show_image = Image.new('RGB', (image_width+100, image_height+100), color='white')
+            # sharpened_image = getClacheImage(cropped_images[0])
+            # show_image.paste(sharpened_image)
+            show_image.paste(cropped_images[0])
+            img_bytes = io.BytesIO()
+            show_image.save(img_bytes, format='JPEG')
+            captured_image = base64.b64encode(img_bytes.getvalue()).decode('utf-8')
 
 
-    if captured_image :
-        image_base64 = captured_image
-    else :
-        image_base64 = base64.b64encode(image_data).decode('utf-8')
+        if captured_image :
+            image_base64 = captured_image
+        else :
+            image_base64 = base64.b64encode(image_data).decode('utf-8')
 
-    # cv2.destroyAllWindows()
-    
-    # You can now process or save the image data as needed
-    # For example, you can save it to a file or a database
-
-    return jsonify({'message': 'Image uploaded successfully', 'image_base64': image_base64})
+        # cv2.destroyAllWindows()
+        return jsonify({'message': 'Image uploaded successfully', 'image_base64': image_base64})
+    except Exception as e:
+        # Log the exception
+        print(f"Exception occurred: {e}")
+        return jsonify({'error': 'An error occurred while processing the image'}), 500
 
 # def getClacheImage(image):
 #     # Check if the image is already in grayscale
@@ -210,8 +215,12 @@ def save_image():
     global captured_byte_image
     data = request.get_json()
     if not captured_byte_image.size == 0:
-        enhanceAndSaveImage(data, captured_byte_image)
-        return 'Image saved successfully!'
+        a4_canvas = enhanceAndSaveImage(data, captured_byte_image)
+        img_bytes = io.BytesIO()
+        a4_canvas.save(img_bytes, format='JPEG')
+        image_base64 = base64.b64encode(img_bytes.getvalue()).decode('utf-8')
+        return jsonify({'message': 'Image uploaded successfully', 'image_base64': image_base64})
+        # return 'Image saved successfully!'
     else:
         return 'No image to save.'
 
@@ -225,8 +234,12 @@ def save_cropped_image():
     img = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
 
     if not img.size == 0:
-        enhanceAndSaveImage(data, img)
-        return 'Image saved successfully!'
+        a4_canvas = enhanceAndSaveImage(data, img)
+        img_bytes = io.BytesIO()
+        a4_canvas.save(img_bytes, format='JPEG')
+        image_base64 = base64.b64encode(img_bytes.getvalue()).decode('utf-8')
+        return jsonify({'message': 'Image uploaded successfully', 'image_base64': image_base64})
+        # return 'Image saved successfully!'
     else:
         return 'No image to save.'
 
@@ -249,15 +262,16 @@ def enhanceAndSaveImage(data, img):
         y_offset = start_y + row * (image_height + spacing)
         a4_canvas.paste(enhanced_image, (x_offset, y_offset))
     
-    img_bytes = io.BytesIO()
-    a4_canvas.save(img_bytes, format='JPEG', quality=100)
-    captured_image2 = img_bytes.getvalue()
+    return a4_canvas
+    # img_bytes = io.BytesIO()
+    # a4_canvas.save(img_bytes, format='JPEG', quality=100)
+    # captured_image2 = img_bytes.getvalue()
 
-    # # Save the captured image to the local uploads folder
-    image_path = os.path.join(app.config['UPLOAD_FOLDER'], 'captured_image.jpg')
+    # # # Save the captured image to the local uploads folder
+    # image_path = os.path.join(app.config['UPLOAD_FOLDER'], 'captured_image.jpg')
 
-    with open(image_path, 'wb') as f:
-        f.write(captured_image2)
+    # with open(image_path, 'wb') as f:
+    #     f.write(captured_image2)
     # send_file(captured_image2, mimetype='image/jpeg', as_attachment=True, download_name='captured_image.jpg')
 
 if __name__ == '__main__':
@@ -265,3 +279,4 @@ if __name__ == '__main__':
     if not os.path.exists(upload_folder):
         os.makedirs(upload_folder)
     app.run(debug=True)
+    # ui.run()

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Capture</title>
+    <link rel="stylesheet" href="./stylegpt.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
+</head>
+<body class="page">
+    <header>
+        <h1>Photo Capture</h1>
+    </header>
+    <main>
+        <section id="image-input-section">
+            <input type="file" id="imageInput" accept="image/*" class="custom-file-input">
+            <button id="upload-btn" class="upload-file-btn">Upload Image</button>
+        </section>
+        <section id="captured-image-section">
+            <div id="captured-image-container">
+                <img id="captured-image" alt="Captured Image">
+            </div>
+        </section>
+        <section id="save-images-section">
+            <h3>Enter number of images to print</h3>
+            <input type="number" id="numberOfImages" placeholder="Enter number of images to print" class="number-input">
+            <button id="save-btn" class="save-btn">Save Photo</button>
+        </section>
+        <section id="cropper-section" class="hide">
+            <h2>Didn't like the AI image cropper? Crop Yourself! We will save it for you.</h2>
+            <div class="container">
+                <div class="image-container">
+                    <img id="cropper-image" />
+                </div>
+                <div class="preview-container">
+                    <img id="preview-image" />
+                </div>
+            </div>
+            <div class="btns">
+                <button id="preview" class="hide">Preview</button>
+                <button id="download" class="hide">Print</button>
+                <input type="number" id="croppedNumberOfImages" placeholder="Enter number of images to print" class="number-input hide">
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Photo Capture. All rights reserved.</p>
+    </footer>
+    <script src="callAPI.js"></script>
+    <script src="https://unpkg.com/cropperjs@next"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+</body>
+</html>

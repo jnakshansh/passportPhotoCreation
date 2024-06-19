@@ -1,0 +1,126 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background: #04AA6D;
+    color: white;
+    padding: 1em 0;
+    text-align: center;
+}
+
+main {
+    flex: 1;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5em;
+}
+
+footer {
+    background: #f1f1f1;
+    text-align: center;
+    padding: 1em 0;
+}
+
+h1, h2, h3 {
+    margin: 0.5em 0;
+}
+
+.page {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+}
+
+section {
+    width: 100%;
+}
+
+#image-input-section, #save-images-section, .btns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+}
+
+#captured-image-container{
+    display: block;
+    width: 100px;
+    height: auto;
+}
+
+#captured-image{
+    display: none;
+}
+
+.custom-file-input, .upload-file-btn, .save-btn, .btns button {
+    font-size: 16px;
+    padding: 10px 20px;
+    border: 2px solid #04AA6D;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #04AA6D;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-file-input:hover, .upload-file-btn:hover, .save-btn:hover, .btns button:hover {
+    background-color: #04AA6D;
+    color: #ffffff;
+}
+
+.number-input {
+    padding: 10px;
+    width: 100%;
+    max-width: 200px;
+    box-sizing: border-box;
+    border: 2px solid #04AA6D;
+    border-radius: 5px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    width: 100%;
+    max-width: 800px;
+}
+
+.image-container, .preview-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #04AA6D;
+    padding: 1em;
+    box-sizing: border-box;
+}
+
+.image-container img, .preview-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.hide {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .custom-file-input, .upload-file-btn, .save-btn, .btns button, .number-input {
+        width: 100%;
+        max-width: none;
+    }
+}

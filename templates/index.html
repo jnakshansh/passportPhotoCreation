@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Photo Capture</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        #video-feed {
+            width: 640px;
+            height: 480px;
+            border: 1px solid black;
+        }
+        #captured-image {
+            max-width: 100%;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Photo Capture</h1>
+    <!-- <div>
+        <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Video Feed">
+    </div>
+    <button id="capture-btn">Capture Photo</button> -->
+    <div>
+        <img id="captured-image" alt="Captured Image">
+    </div>
+    <button id="retake-btn" style="display: none;">Retake Photo</button>
+    <button id="save-btn" style="display: none;">Save Photo</button>
+
+    <script>
+        $(document).ready(function() {
+            $('#capture-btn').click(function() {
+                $.ajax({
+                    url: '/capture_photo',
+                    type: 'POST',
+                    success: function(response) {
+                        if (response === 'OK') {
+                            updateCapturedImage();
+                            $('#retake-btn').show();
+                            $('#save-btn').show();
+                        }
+                    }
+                });
+            });
+
+            $('#retake-btn').click(function() {
+                $('#captured-image').hide();
+                $('#retake-btn').hide();
+                $('#save-btn').hide();
+            });
+
+            $('#save-btn').click(function() {
+                // Save the captured image to the server or perform any other operations
+                console.log('Image saved successfully!');
+            });
+
+            function updateCapturedImage() {
+                $.ajax({
+                    url: '/get_captured_image',
+                    type: 'GET',
+                    success: function(imageData) {
+                        if (imageData) {
+                            $('#captured-image').show();
+                            $('#captured-image').attr('src', 'data:image/jpeg;base64,' + imageData);
+                        } else {
+                            $('#captured-image').hide();
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

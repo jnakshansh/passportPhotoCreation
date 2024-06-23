@@ -8,7 +8,7 @@ import os
 from flaskwebgui import FlaskUI
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'D:/mine/bhaiya/uploads/'
+# app.config['UPLOAD_FOLDER'] = 'D:/mine/bhaiya/uploads/'
 
 ui = FlaskUI(app=app, server="flask", fullscreen=True)
 
@@ -275,8 +275,8 @@ def enhanceAndSaveImage(data, img):
     # send_file(captured_image2, mimetype='image/jpeg', as_attachment=True, download_name='captured_image.jpg')
 
 if __name__ == '__main__':
-    upload_folder = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'])
-    if not os.path.exists(upload_folder):
-        os.makedirs(upload_folder)
+    # upload_folder = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'])
+    # if not os.path.exists(upload_folder):
+    #     os.makedirs(upload_folder)
     app.run(debug=True)
     # ui.run()
